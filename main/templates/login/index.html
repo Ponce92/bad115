@@ -1,0 +1,96 @@
+
+
+{% load bootstrap4 %}
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SGIEE :: {% block title %}Login{% endblock %}</title>
+    <link rel="icon" href="{% static "icon.ico" %}" type="image/ico" />
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.css" %}"/>
+    <link rel="stylesheet" href="{% static "core-ui/css/style.css" %}" />
+    
+    <link rel="stylesheet" href="{% static "css/login.css" %}"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+</head>
+
+<body class="app flex-row align-items-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card-group">
+            <div class="card p-4">
+              <div class="card-body">
+                <h1>Login</h1>
+                <p class="text-muted">Ingresa tus credenciales para acceder.</p>
+                
+                {% if frm.errors %}
+                    {% bootstrap_alert "Usuario/conrasenia incorrectas" alert_type='danger' %}
+                {% endif %}
+                
+                <form   action="/login/" 
+                        name="from-lg"
+                        method="post"
+                        id="from-lg" 
+                        class="form">
+                    {% csrf_token %}
+                    {% bootstrap_field frm.user_name show_label=False addon_before='<i class="fas fa-user"></i>' %}
+                    
+                    {% bootstrap_field frm.user_pass show_label=False addon_before='<i class="fas fa-lock"></i>' %}
+                  
+                  
+                </form>
+                   
+               
+<!--
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="icon-user"></i>
+                    </span>
+                  </div>
+                  <input class="form-control" type="text" placeholder="Username">
+                </div>
+                <div class="input-group mb-4">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="icon-lock"></i>
+                    </span>
+                  </div>
+                  <input class="form-control" type="password" placeholder="Password">
+                </div>
+-->
+
+                <div class="row">
+                  <div class="col-6">
+                    <button class="btn btn-primary px-4" 
+                            type="submit" 
+                            form="from-lg" 
+                            onclick="this.form.submit()">Login</button>
+                  </div>
+        
+                  <div class="col-6 text-right">
+                    <button class="btn btn-link px-0" type="button">Forgot password?</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
+              <div class="card-body text-center">
+                <div>
+                  <h2>Sign up</h2>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  <button class="btn btn-primary active mt-3" type="button">Register Now!</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- CoreUI and necessary plugins-->
+    <script src="{% static 'Jquery/JQuery.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+</body>
+</html>
