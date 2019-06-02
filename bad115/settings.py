@@ -31,13 +31,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'main',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'main',
     'bootstrap4',
+
 
 ]
 
@@ -55,7 +57,7 @@ ROOT_URLCONF = 'bad115.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND':'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -70,6 +72,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'bad115.wsgi.application'
+
+# Backends
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 
 # Database
@@ -104,6 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+# Encryptacion de django de los passwords
+#Usuario personalizado. . .
+AUTH_USER_MODEL = 'main.Users'
 
 
 # Internationalization
@@ -123,4 +133,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/' 
+STATIC_URL = '/static/'
+
+#PATH a lugares autenticacion
+
+LOGIN_URL='security/login'
+LOGOUT_REDIRECT_URL='/sgiee/security/login'
+LOGIN_REDIRECT_URL='/sgiee/home'

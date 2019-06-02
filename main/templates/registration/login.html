@@ -1,7 +1,5 @@
-
-
-{% load bootstrap4 %}
 {% load static%}
+{% load bootstrap4 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,15 +27,15 @@
                     {% bootstrap_alert "Usuario/conrasenia incorrectas" alert_type='danger' %}
                 {% endif %}
                 
-                <form   action="/login/" 
+                <form   action="{% url 'login' %}"
                         name="from-lg"
                         method="post"
                         id="from-lg" 
                         class="form">
                     {% csrf_token %}
-                    {% bootstrap_field frm.user_name show_label=False addon_before='<i class="fas fa-user"></i>' %}
+                    {% bootstrap_field form.username show_label=False addon_before='<i class="fas fa-user"></i>' %}
                     
-                    {% bootstrap_field frm.user_pass show_label=False addon_before='<i class="fas fa-lock"></i>' %}
+                    {% bootstrap_field form.password show_label=False addon_before='<i class="fas fa-lock"></i>' %}
                   
                   
                 </form>

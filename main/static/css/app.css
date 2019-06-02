@@ -1,0 +1,13 @@
+a.btn{
+    border-radius: 4px;
+}
+a.btn >i.icon{
+    font-weight: bold;
+}
+
+button.btn{
+    border-radius: 3px;
+}
+button.btn>i.icon{
+    font-weight: bold;
+}

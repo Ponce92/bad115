@@ -1,0 +1,17 @@
+{% load bootstrap4 %}
+<form           action="{% url 'rolCrear' %}"
+                data-url="{% url 'rolCrear' %}"
+                name="crtFrom"
+                method="post"
+                id="crtFrom"
+                class="form">
+    {% csrf_token %}
+        <label>Codigo :</label>
+        {% bootstrap_field crtForm.codigo   show_label=False %}
+        <label>Nombre :</label>
+        {% bootstrap_field crtForm.nombre   show_label=False %}
+        <label>Descripcion :</label>
+        {% bootstrap_field crtForm.desc     show_label=False rows=30 %}
+        <label>Estado :</label>
+        {% bootstrap_field crtForm.estado   show_label=False %}
+</form>
