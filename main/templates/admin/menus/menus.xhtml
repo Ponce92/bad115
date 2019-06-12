@@ -1,0 +1,124 @@
+{% extends 'layout/layout.html' %}
+{% load bootstrap4 %}
+{% load static %}
+{% block title %} Menus {% endblock %}
+{% block content %}
+
+<div class="row" style="margin-top: 25px;">
+        <div class="col col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="icon-list"></i> Menus del sistema
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col col-12">
+                            <button class="btn btn-primary mb-3" type="button" id="btn_crear" data-toggle="modal" data-target="#crear">
+                                <i class="icon icon-plus"> </i> Agregar menu
+                            </button>
+                        </div>
+                    </div>
+
+                    <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Descripcion</th>
+                                <th>Menu superior</th>
+                                <th>Url</th>
+                                <th>Icono</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for res in menuList %}
+                            <tr>
+                                <td style="text-align: center">{{ res.pk_codigo }}</td>
+                                <td>{{ res.ct_nombre }}</td>
+                                <td>{{ res.cd_descripcion}}</td>
+                                <td>{{ res.fk_menu_codigo }}</td>
+                                <td>{{ res.ct_url }}</td>
+                                <td>{{ res.ct_icono}} </td>
+                                <td>
+                                    {% if res.cl_estado == "ACT" %}
+                                        Activo
+                                    {% else %}
+                                        Inactivo
+                                    {% endif %}
+                                </td>
+                                <td align="center">
+
+                                    <a class="btn btn-danger" href="{% url 'menu_eliminar' codigo=res.pk_codigo %}" onclick="eliminar()" title="Eliminar">
+                                        <i class=" icon icon-trash"></i>
+                                    </a>
+                                    <a class="btn btn-success" href="#" data-toggle="modal" data-target="#editar" onclick="actualizar('{% url 'menu_editar_get' codigo=res.pk_codigo %}')"  title="Editar">
+                                        <i class=" icon icon-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</div>
+<div class="row">
+    <div class="modal fade"
+         id="crear"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="crear"
+         style="display: none;"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Agregar menu </h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                </div>
+                <div class="modal-body" id="f_crear">
+                    {% include 'admin/menus/crear.html' %}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" id="add_menu" form="crear_form" type="button">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade"
+         id="editar"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="editar"
+         style="display: none;"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Menu :: Actualizar </h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                </div>
+                <div class="modal-body" id="f_editar">
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" id="edit_menu" type="button">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{% static 'js/menus/menus.js' %}"></script>
+</div>
+
+{% endblock %}

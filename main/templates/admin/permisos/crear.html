@@ -1,0 +1,21 @@
+{% load bootstrap4 %}
+<form           action="{% url 'crear_permiso' %}"
+                data-url="#"
+                name="crear_form"
+                method="post"
+                id="crear_form"
+                class="form">
+    {% csrf_token %}
+        <div class="form-row">
+            <div class="col-4">
+                <label>Codigo :</label>
+                {% bootstrap_field form.pk_codigo   show_label=False %}
+            </div>
+            <div class="col-8">
+                <label>Nombre :</label>
+                {% bootstrap_field form.ct_nombre   show_label=False %}
+            </div>
+        </div>
+        <label>Descripcion :</label>
+        {% bootstrap_field form.cd_descripcion   show_label=False rows=30 %}
+</form>

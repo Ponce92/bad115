@@ -1,0 +1,38 @@
+{% load bootstrap4 %}
+<form           action="{% url 'menu_editar' %}"
+                data-url="{% url 'validar_menu' %}"
+                name="editar_form"
+                method="post"
+                id="editar_form"
+                class="form">
+    {% csrf_token %}
+        <div class="form-row">
+            <div class="col-4">
+                <label>Codigo :</label>
+                {% bootstrap_field editarForm.codigo   show_label=False  %}
+            </div>
+            <div class="col-8">
+                <label>Nombre :</label>
+                {% bootstrap_field editarForm.nombre   show_label=False %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-6">
+                 <label>Icono :</label>
+                {% bootstrap_field editarForm.icono   show_label=False %}
+            </div>
+            <div class="col-6">
+                <label>Menu padre:</label>
+                {% bootstrap_field editarForm.menuS   show_label=False %}
+            </div>
+        </div>
+
+        <label>Url :</label>
+        {% bootstrap_field editarForm.url   show_label=False %}
+
+        <label>Descripcion :</label>
+        {% bootstrap_field editarForm.desc   show_label=False rows=30 %}
+
+        <label>Estado :</label>
+        {% bootstrap_field editarForm.estado   show_label=False %}
+</form>

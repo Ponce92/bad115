@@ -1,0 +1,167 @@
+{% extends 'layout/layout.html' %}
+{% load bootstrap4 %}
+{% load static %}
+{% block title %} Roles {% endblock %}
+
+{% block content %}
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="icon-list"></i>
+                    Roles del sistema
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col col-12">
+                            <button class="btn btn-primary mb-3"
+                                    id="btn_show_crear"
+                                    data-url="{% url 'crear_rol' %}"
+                                    type="button"
+                                    data-toggle="modal"
+                                    data-target="#modal_crear">
+                                <i class="icon icon-plus"> </i> Agregar
+                            </button>
+                        </div>
+                    </div>
+                    {% if roles %}
+                    <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                        <thead>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Descripcion</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </thead>
+                        <tbody>
+
+                                 {% for res in roles %}
+                            <tr>
+                                <td style="text-align: center">{{ res.pk_codigo }}</td>
+                                <td>{{ res.ct_nombre}}</td>
+                                <td>{{ res.cd_descripcion}}</td>
+                                <td style="text-align: center">
+                                    {% if res.cl_estado %}
+                                        Activo
+                                    {% else %}
+                                        Inactivo
+                                    {% endif %}
+                                </td>
+                                <td align="center">
+
+                                    <a class="btn btn-danger"
+                                       href="#"
+                                       title="Eliminar"
+                                       data-toggle="modal"
+                                       data-target="#myModal">
+                                        <i class=" icon icon-trash"></i>
+                                    </a>
+                                    <a class="btn btn-success"
+                                       id="btn_show_editar"
+                                       data-url="{% url 'editar_rol' res.pk_codigo %}"
+                                       href="#"
+                                       title="Editar"
+                                       data-toggle="modal"
+                                       data-target="#modal_editar">
+                                        <i class=" icon icon-pencil"></i>
+                                    </a>
+                                    <a class="btn btn-primary" href="{% url 'permisos_roles' res.pk_codigo %}" title="Permisos Asociados">
+                                        <i class=" icon icon-share-alt"></i>
+                                    </a>
+                                    <a class="btn btn-primary" href="{% url 'roles_menus' res.pk_codigo %}" title="Menus Asociados">
+                                        <i class=" icon icon-share-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                        {% if object_list.count > 9 %}
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item ">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                            </li>
+                            {% else %}
+                                <li class="page-item disabled ">
+                                <a class="page-link" href=" " tabindex="-1">Previous</a>
+                            </li>
+                            {% endif %}
+                            {% if page_obj.has_next %}
+                            <li class="page-item ">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" tabindex="-1">Sigiente</a>
+                            </li>
+                            {% else %}
+                                <li class="page-item disabled ">
+                                <a class="page-link" href="" tabindex="-1">Sigiente</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                        {% endif %}
+                    {% else %}
+                        <div class="row justify-content-center">
+                            <h4><strong> No hay registros a <mostrar class=""></mostrar></strong></h4>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade"
+         id="modal_crear"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="modal_crear"
+         style="display: none;"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Rol  : :  Crear</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="target_crear">
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                    <button id="btn_crear" class="btn btn-primary" form="crtFrom" type="button">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade"
+         id="modal_editar"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="modal_editar"
+         style="display: none;"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Rol  : :  Actualizar</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="target_editar">
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                    <button id="btn_editar" class="btn btn-primary"  type="button">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="{% static 'js/roles/roles.js' %}"></script>
+{% endblock %}

@@ -9,38 +9,30 @@
             <div class="card">
                 <div class="card-header">
                     <i class="icon-list"></i>
-                    Roles del sistema
+                    Permisos del sistema
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col col-12">
-                            <button class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#crtModal">
+                            <button onclick="crear('{% url 'crear_permiso' %}')" class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#crear_modal">
                                 <i class="icon icon-plus"> </i> Agregar
                             </button>
                         </div>
                     </div>
-
+                    {% if object_list %}
                     <table class="table table-responsive-sm table-bordered table-striped table-sm">
                         <thead>
                             <th>Codigo</th>
                             <th>Nombre</th>
                             <th>Descripcion</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
                         </thead>
                         <tbody>
-                            {% for res in roles %}
+
+                                 {% for res in object_list %}
                             <tr>
-                                <td style="text-align: center">{{ res.rol_code }}</td>
-                                <td>{{ res.rol_name}}</td>
-                                <td>{{ res.rol_desc}}</td>
-                                <td style="text-align: center">
-                                    {% if res.rol_state == "ACT" %}
-                                        Activo
-                                    {% else %}
-                                        Inactivo
-                                    {% endif %}
-                                </td>
+                                <td style="text-align: center">{{ res.pk_codigo }}</td>
+                                <td>{{ res.ct_nombre}}</td>
+                                <td>{{ res.cd_descripcion}}</td>
                                 <td align="center">
 
                                     <a class="btn btn-danger" href="#" title="Eliminar" data-toggle="modal" data-target="#myModal">
@@ -57,6 +49,33 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                        {% if object_list.count > 9 %}
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item ">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                            </li>
+                            {% else %}
+                                <li class="page-item disabled ">
+                                <a class="page-link" href=" " tabindex="-1">Previous</a>
+                            </li>
+                            {% endif %}
+                            {% if page_obj.has_next %}
+                            <li class="page-item ">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" tabindex="-1">Sigiente</a>
+                            </li>
+                            {% else %}
+                                <li class="page-item disabled ">
+                                <a class="page-link" href="" tabindex="-1">Sigiente</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                        {% endif %}
+                    {% else %}
+                        <div class="row justify-content-center">
+                            <h4><strong> No hay registros a <mostrar class=""></mostrar></strong></h4>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
@@ -81,25 +100,25 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="crtModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+{#    ========================Modal de crear==================================      #}
+    <div class="modal fade" id="crear_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title">Rol  : :  Crear</h5>
+                <h5 class="modal-title">Permisos  : :  Crear</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
                 </div>
-                <div class="modal-body" id="targetCrt">
-                    {% include 'admin/crtRolFrg.html' %}
+                <div class="modal-body" id="target_crear">
+
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-                    <button class="btn btn-primary" form="crtFrom" type="submit">Save changes</button>
+                    <button class="btn btn-primary" form="form_crear" type="submit">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="{% static 'js/roles.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/permisos/permisos.js' %}"></script>
 {% endblock %}

@@ -43,8 +43,35 @@ INSERT INTO roles (rol_code,rol_name,rol_desc,rol_state) VALUES('UACI','Jefe UAC
            VALUES('MNGU','MNSS','Usuarios','Gesion de usuarios del sistema','ACT','/home/usuarios/','icon-people');
 
 
-    ##-----------Tabla ROLES-MENU
+##-----------Tabla ROLES-MENU
 
-    INSERT INTO menus_roles(menu_code,rol_code) VALUES ('MNSS','ADIT');
-    INSERT INTO menus_roles(menu_code,rol_code) VALUES ('MNGR','ADIT');
-    INSERT INTO menus_roles(menu_code,rol_code) VALUES ('MNGU','ADIT');
+INSERT INTO menus_roles(menu_code,rol_code) VALUES ('MNSS','ADIT');
+INSERT INTO menus_roles(menu_code,rol_code) VALUES ('MNGR','ADIT');
+INSERT INTO menus_roles(menu_code,rol_code) VALUES ('MNGU','ADIT');
+
+#--------------------------- insersiones de la tabla Permisos
+        #roles
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PCRL', 'puede_crear_roles', 'Puede crear un rol');
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PBRL', 'puede_borar_roles', 'Puede borrar los roles ( si es posible)');
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PERL', 'puede_editar_roles', 'Puede editar los roles');
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PRRL', 'puede_leer_roles', 'Puede leer roles existentes');
+        #usuarios
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PCUS', 'puede_crear_usuarios', 'Puede crear un nuevo usuario');
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PEUS', 'puede_eliminar_usuarios', 'Puede borrar usuarios existentes');
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PAUS', 'puede_actualizar_usuarios', 'Puede actualizar un usuario existente ');
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PLUS', 'Puede  roles', 'Puede leer usuarios');
+        #Roles y permisos
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PLPR', 'puede_leer_permisos_rol', 'Puede leer los permisos del rol');
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PEPR', 'puede_eliminar_permisos_rol', 'Puede eliminar un permisos de roles');
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PAPR', 'puede_agregar_permisos_rol', 'Puede agregar permisos a roles');
+        #Roles y menus
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PLRM', 'puede_leer_menus_rol', 'Puede leer los menus asociados a un roles');
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PERM', 'puede_eliminar_menus_rol', 'Puede eliminar un menus asociados  a los roles');
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PARM', 'puede_agregar_menus_rol', 'Puede agregar menus asociados a un roles');
+        #Catalogo productos
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PLEQ', 'puede_leer_equipo', 'Puede leer catalogo de equipo');
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PEEQ', 'puede_eliminar_equipo', 'Puede eliminar  euipo electrico');
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PCEQ', 'puede_agregar_equipo', 'Puede agregar equipo electrico');
+INSERT INTO bt_permisos (pk_codigo, ct_nombre, cd_descripcion) VALUES ('PAEQ', 'puede_actualizar_equipo', 'Puede actualizar un equipo');
+
+

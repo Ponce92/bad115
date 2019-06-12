@@ -115,17 +115,24 @@
                 <i class="nav-icon icon-drop"></i> Colors</a>
             </li>
 -->
-            
-            <li class="nav-item nav-dropdown">
-              <a class="nav-link nav-dropdown-toggle" href="#">
-                <i class="nav-icon icon-puzzle"></i> Uno</a>
-              <ul class="nav-dropdown-items">
-                <li class="nav-item">
-                  <a class="nav-link" href="base/tooltips.html">
-                    <i class="nav-icon icon-puzzle"></i> Tooltips</a>
-                </li>
-              </ul>
-            </li>
+                {% for res in  Menus %}
+                    {% if  res.fk_menu_codigo == None %}
+                        <li class="nav-item nav-dropdown">
+                        <a class="nav-link nav-dropdown-toggle" href="#">
+                        <i class="nav-icon icon-menu"></i> {{ res.ct_nombre }} </a>
+                            <ul class="nav-dropdown-items">
+                                {% for mnu in Menus %}
+                                    {% if mnu.fk_menu_codigo.pk_codigo == res.pk_codigo %}
+                                        <li class="nav-item">
+                                          <a class="nav-link" href="{{ mnu.ct_url }}">
+                                            <i class="nav-icon icon-social-soundcloud"></i> {{ mnu.ct_nombre }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                {% endfor %}
             
             <li class="nav-item mt-auto">
                 <a class="nav-link nav-link-danger" href="{% url 'logout'%}" target="_top">
@@ -142,7 +149,21 @@
         <!-- Breadcrumb-->
         <div class="container-fluid">
           <div class="animated fadeIn">
-            
+
+{#            {%if messages  %}#}
+{#                {% for msg in messages %}#}
+{##}
+{#                    <div class="alert alert-{{msg.level_tag}} alert-dismissible fade show" role="alert">#}
+{#                        {{ msg.message }}#}
+{#                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
+{#                        <span aria-hidden="true">&times;</span>#}
+{#                      </button>#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{##}
+{#            {% endif  %}#}
+              <br>
+            {% bootstrap_messages %}
             {% block content%} aa {% endblock %}
             
           </div>

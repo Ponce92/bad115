@@ -3,47 +3,34 @@
     DROP TABLE IF EXISTS permissions_roles;
     DROP TABLE IF EXISTS permissions;
     DROP TABLE IF EXISTS menus;
+
 #--    DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS roles;
 
  #   --- Creamos la tabla Roles
-    CREATE TABLE roles(
-        rol_code            VARCHAR(4)      NOT NULL            ,
-        rol_name            VARCHAR(255)    NOT NULL    UNIQUE  ,
-        rol_desc            VARCHAR(255)    NOT NULL            ,
-        rol_state           VARCHAR(3)      NOT NULL            ,
+    CREATE TABLE bt_roles(
+        pk_codigo           VARCHAR(8)      NOT NULL            ,
+        ct_nombre           VARCHAR(255)    NOT NULL    UNIQUE  ,
+        ct_descrpcion       VARCHAR(255)    NOT NULL            ,
+        cl_estado           BOOLEAN         NOT NULL            ,
+        cl_editable         BOOLEAN         NOT NULL            ,
 
-        PRIMARY KEY (rol_code)
+        PRIMARY KEY (pk_codigo)
     );
 
-    #--- Crear la tabla usuarios
-#--    CREATE TABLE users(
-#--        user_code           VARCHAR(8)      NOT NULL            ,
-#--        rol_code            VARCHAR(4)                          ,
-#--        user_name           VARCHAR(150)    NOT NULL    UNIQUE  ,
-#--        user_email          VARCHAR(255)    NOT NULL    UNIQUE  ,
-#--        user_password       VARCHAR(255)    NOT NULL            ,
-#--        user_attempts       INT             NOT NULL            ,
-#--        user_state          VARCHAR(3)      NOT NULL            ,
-#--
-#--        PRIMARY KEY (user_code),
-#--        FOREIGN KEY (rol_code) REFERENCES roles(rol_code)
-#--                             ON DELETE SET NULL
-#--                             ON UPDATE CASCADE
-#--    );
 
-    # --- Creamos la tabla permisos
-    CREATE TABLE permissions(
-        permission_code      VARCHAR(4)     NOT NULL            ,
-        permission_name      VARCHAR(100)   NOT NULL            ,
-        permission_desc      VARCHAR(200)   NOT NULL            ,
+    # ----------------------------- Creamos la tabla permisos
+    CREATE TABLE bt_permisos(
+        pk_codigo           VARCHAR(8)     NOT NULL            ,
+        ct_nombre           VARCHAR(100)   NOT NULL  UNIQUE    ,
+        cd_descripcion      VARCHAR(200)   NOT NULL            ,
 
-        PRIMARY KEY(permission_code)
+        PRIMARY KEY(pk_codigo)
     );
 
     # --- creamos la tabla MENUS
-    CREATE  TABLE menus(
-        menu_code           VARCHAR(4)      NOT NULL            ,
+    CREATE  TABLE bt_menus(
+        pk_codigo           VARCHAR(4)      NOT NULL            ,
         menu_padre_code     VARCHAR(4)                          ,
         menu_name           VARCHAR(150)    NOT NULL UNIQUE     ,
         menu_desc           VARCHAR(255)    NOT NULL            ,
@@ -57,33 +44,33 @@
                             ON UPDATE CASCADE
     );
     #--- Creamos la tabla MENUS-ROLES
-        CREATE TABLE menus_roles(
-            menu_rol_id           INT         NOT NULL  AUTO_INCREMENT,
-            menu_code             VARCHAR(4)                          ,
-            rol_code              VARCHAR(4)                          ,
+            CREATE TABLE bt_roles_menus(
+                pk_id           INT         NOT NULL  AUTO_INCREMENT,
+                fk_rol_codigo   VARCHAR(8)                          ,
+                fk_menu_codigo  VARCHAR(8)                          ,
 
-            PRIMARY KEY (menu_rol_id)                                 ,
-            FOREIGN KEY (rol_code) REFERENCES roles(rol_code)
-                                    ON DELETE   CASCADE
-                                    ON UPDATE   CASCADE               ,
-            FOREIGN KEY (menu_code) REFERENCES menus(menu_code)
-                                    ON DELETE CASCADE
-                                    ON UPDATE CASCADE
+                PRIMARY KEY (pk_id)                                 ,
+                FOREIGN KEY (fk_rol_codigo) REFERENCES bt_roles(pk_codigo)
+                                        ON DELETE   CASCADE
+                                        ON UPDATE   CASCADE               ,
+                FOREIGN KEY (fk_menu_codigo) REFERENCES bt_menus(pk_codigo)
+                                        ON DELETE CASCADE
+                                        ON UPDATE CASCADE
 
-        );
+            );
 
 
     # -- Creamos la tabla Permisos de roles
-    CREATE TABLE permissions_roles(
-        permission_rol_id     INT           NOT NULL AUTO_INCREMENT,
-        permission_code       VARCHAR(4)    NOT NULL,
-        rol_code              VARCHAR(4)    NOT NULL,
+    CREATE TABLE bt_roles_permisos(
+        pk_id     INT       NOT NULL AUTO_INCREMENT,
+        fk_rol_codigo       VARCHAR(8)    NOT NULL,
+        fk_permiso_codigo   VARCHAR(8)    NOT NULL,
 
-        PRIMARY KEY(permission_rol_id),
-        FOREIGN KEY (rol_code)    REFERENCES roles(rol_code)
+        PRIMARY KEY(pk_id),
+        FOREIGN KEY (fk_rol_codigo)    REFERENCES bt_roles(pk_codigo)
                                 ON DELETE CASCADE
                                 ON UPDATE CASCADE,
-        FOREIGN KEY (permission_code) REFERENCES permissions(permission_code)
+        FOREIGN KEY (fk_permiso_codigo) REFERENCES bt_permisos(pk_codigo)
                                 ON DELETE CASCADE
                                 ON UPDATE CASCADE
     );

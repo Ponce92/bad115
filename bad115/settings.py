@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'main',
     'bootstrap4',
 
-
 ]
 
 MIDDLEWARE = [
@@ -51,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'bad115.urls'
@@ -113,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 # Encryptacion de django de los passwords
 #Usuario personalizado. . .
-AUTH_USER_MODEL = 'main.Users'
+AUTH_USER_MODEL = 'main.User'
 
 
 # Internationalization
@@ -139,4 +139,4 @@ STATIC_URL = '/static/'
 
 LOGIN_URL='security/login'
 LOGOUT_REDIRECT_URL='/sgiee/security/login'
-LOGIN_REDIRECT_URL='/sgiee/home'
+LOGIN_REDIRECT_URL='/sgiee/home/'

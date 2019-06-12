@@ -1,0 +1,39 @@
+<div class="col-12" style="max-height: 600px;overflow-y:auto; ">
+{% if menus %}
+                    <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                        <thead>
+                            <th>Nombre</th>
+                            <th>Descripcion</th>
+                            <th>Menu Padre</th>
+                            <th>Acciones</th>
+                        </thead>
+                        <tbody>
+
+                                 {% for res in menus %}
+                            <tr>
+
+                                <td>{{ res.ct_nombre}}</td>
+                                <td>{{ res.cd_descripcion}}</td>
+                                <td>{{ res.fk_menu_codigo.ct_nombre }}</td>
+                                <td align="center">
+                                    <a class="btn btn-success"
+                                       href="#"
+                                       data-dismiss="modal"
+                                       title="Eliminar"
+                                        onclick="agregarMenu('{{ res.pk_codigo }}')"
+                                    >
+                                        <i class=" icon icon-plus"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+{% else %}
+    <div class="row justify-content-center">
+        <h4><strong style="color: #4d5254;">No se han encontrado menus que puedan agregarse.</strong></h4>
+    </div>
+{% endif %}
+
+</div>

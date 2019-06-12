@@ -1,0 +1,108 @@
+{% extends 'layout/layout.html' %}
+{% load bootstrap4 %}
+{% load static %}
+{% block title %} Roles {% endblock %}
+
+{% block content %}
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                        <i class="icon-list"></i>
+                        &nbsp;
+                        <strong>
+                              Menus asociados al rol :: <span style="color: darkred;">{{ rol.ct_nombre }}</span>
+                        </strong>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                             <button class="btn btn-primary align-self-end"
+                                     id="btn_show_agregar"
+                                     data-url="{% url 'get_menus' rol.pk_codigo %}"
+                                     type="button"
+                                    data-toggle="modal"
+                                    data-target="#modal_agregar">
+                                 <i class="icon-plus"></i> Agregar
+                             </button>
+                        </div>
+
+                    </div>
+                    <div class="row" id="target_table">
+                        {% include 'admin/roles/menusTbl.html' %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade"
+         id="modal_agregar"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="modal_agregar"
+         style="display: none;"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Seleccione permiso para agregar</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="target_agregar">
+
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade"
+         id="modal_delete"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="modal_delete"
+         style="display: none;"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="color: darkred;"> <i class="icon icon-info" style="color: darkred;"> &nbsp;</i> Atencion </h4>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <strong style="color: #4d5254;">
+                        Se eliminara el permiso del rol, permamentemente
+                    </strong>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" style="color: white;" type="button" data-dismiss="modal">Close</button>
+                    <button class="btn btn-danger" form="frm_eliminar" onclick="this.form.submit();"  type="button">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div hidden >
+        <form id="frm_agregar" action="{% url 'agregar_menu_rol'%}" method="post">
+            {% csrf_token %}
+            <input name="rol" id="rol" type="text" value="{{ rol.pk_codigo }}">
+            <input name="menu" id="menu" type="text" value="">
+        </form>
+
+        <form id="frm_eliminar" action="{% url 'eliminar_menu_rol' %}" method="post">
+            {% csrf_token %}
+            <input name="role" id="role" type="text" value="{{ rol.pk_codigo }}">
+            <input name="menue" id="menue" type="text" value="">
+        </form>
+    </div>
+
+
+    <script type="text/javascript" src="{% static 'js/roles/menus.js' %}"></script>
+{% endblock %}
