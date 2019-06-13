@@ -9,7 +9,7 @@ from django.core.paginator              import Paginator
 
 from django.db      import connection
 from main.forms import CrtRolForm, EditarMenuForm
-from  main.forms    import CrearMenuForm,RolForm
+from  main.forms    import CrearMenuForm,RolForm,UserForm
 from main.models    import *
 
 #-----------------------------------------------------------------------------------------------------| Roles
@@ -363,6 +363,24 @@ def get_usuarios(request):
         'Menus': getMenus(user.fk_rol_codigo)
     }
     return render(request,'admin/usuarios/usuarios.html',context)
+
+def crear_usuario(request):
+    '''Metodo ajax que retorna el formulario de registro de los usuarios o ejecuta la accion de guardar '''
+    if request.method == 'GET':
+        form = UserForm(initial={'cl_estado':False})
+        context = {
+            'form': form
+        }
+        html = render_to_string('admin/usuarios/crear.html', context, request=request)
+        return JsonResponse({'html_form': html})
+    elif request.method == 'POST':
+        pass
+
+
+def validar_usuario():
+    '''Metodo ajax que valida el formulario de registro de un usuario retorna true o false '''
+    pass
+
 # ----------------------------------------------------------------------------------------
 #       List views
 # ----------------------------------------------------------------------------------------

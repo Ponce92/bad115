@@ -9,8 +9,8 @@ class User(AbstractUser):
     username        = models.CharField(unique=True, max_length=150)
     email           = models.CharField(unique=True, max_length=255)
     password        = models.CharField(max_length=255)
-    user_attempts   = models.IntegerField(default=0)
-    user_state      = models.CharField(max_length=3)
+    cn_intentos   = models.IntegerField(default=0)
+    cl_estado      = models.BooleanField()
 
     USERNAME_FIELD='username'
     REQUIRED_FIELDS = ['email']

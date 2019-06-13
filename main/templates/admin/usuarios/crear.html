@@ -1,0 +1,47 @@
+{% load bootstrap4 %}
+<form           action="{% url 'crear_user' %}"
+                data-url="{% url 'validar_user' %}"
+                name="crear"
+                method="POST"
+                id="crear"
+                class="form">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="col col-6">
+                <label>Nombre de usuario :</label>
+                {% bootstrap_field form.username   show_label=False %}
+            </div>
+            <div class="col col-6">
+                <label>Rol asignado :</label>
+                {% bootstrap_field form.fk_rol_codigo   show_label=False %}
+            </div>
+
+        </div>
+        <div class="form-row">
+            <div class="col col-12">
+                 <label>Correo :</label>
+                {% bootstrap_field form.email   show_label=False %}
+            </div>
+
+
+        </div>
+
+        <div class="form-row">
+            <div class="col col-6">
+                 <label>Password :</label>
+                {% bootstrap_field form.password1   show_label=False show_help=False %}
+            </div>
+            <div class="col col-6">
+                 <label>Confirme password :</label>
+                {% bootstrap_field form.password2   show_label=False show_help=False %}
+            </div>
+
+        </div>
+        <div class="form-row">
+            <div class="col col-12">
+                <label>Estado :</label>
+                {% bootstrap_field form.cl_estado   show_label=False show_help=False %}
+            </div>
+        </div>
+
+</form>

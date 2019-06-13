@@ -58,6 +58,9 @@ urlpatterns = [
     path('admin/menus/actualizar/ajax/<str:codigo>/', admin.menu_actualizar_ajax, name='menu_editar_get'),
 
     #UR  --------------------------------------------------------------------------------------------|    Usuarios
-    path('admin/usuarios/',admin.get_usuarios,name='usuarios')
+    path('admin/usuarios/',admin.get_usuarios,name='usuarios'),
+    path('admin/usuarios/crear/',admin.crear_usuario,name='crear_user'),
+    path('admin/usuarios/crear/validar/', admin.validar_usuario, name='validar_user')
+
 
 ]
