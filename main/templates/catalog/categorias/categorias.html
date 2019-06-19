@@ -1,7 +1,7 @@
 {% extends 'layout/layout.html' %}
 {% load bootstrap4 %}
 {% load static %}
-{% block title %} Roles {% endblock %}
+{% block title %} Equipo electrico {% endblock %}
 
 {% block content %}
     <div class="row" style="margin-top: 20px;">
@@ -9,16 +9,16 @@
             <div class="card">
                 <div class="card-header">
                     <i class="icon-list"></i>
-                    Roles del sistema
+                    <strong>Catalogo de categorias de equipo electrico</strong>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col col-12">
                             {% for permiso  in Permisos  %}
-                                {% if permiso.ct_nombre == 'puede_crear_roles' %}
+                                {% if permiso.ct_nombre == 'puede_crear_categoria_equipo' %}
                                     <button class="btn btn-primary mb-3"
                                         id="btn_show_crear"
-                                        data-url="{% url 'crear_rol' %}"
+                                        data-url="{% url 'crear_categoria' %}"
                                         type="button"
                                         data-toggle="modal"
                                         data-target="#modal_crear">
@@ -28,21 +28,22 @@
                             {% endfor %}
                         </div>
                     </div>
-                    {% if roles %}
+                    {% if list %}
                     <table class="table table-responsive-sm table-bordered table-striped table-sm">
                         <thead>
                             <th>Codigo</th>
                             <th>Nombre</th>
-                            <th>Descripcion</th>
+                            <th><Descripcion></Descripcion></th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </thead>
                         <tbody>
 
-                                 {% for res in roles %}
+                                 {% for res in list %}
                             <tr>
                                 <td style="text-align: center">{{ res.pk_codigo }}</td>
                                 <td>{{ res.ct_nombre}}</td>
+
                                 <td>{{ res.cd_descripcion}}</td>
                                 <td style="text-align: center">
                                     {% if res.cl_estado %}
@@ -53,23 +54,26 @@
                                 </td>
                                 <td align="center">
                                     {% for permiso  in Permisos  %}
-                                        {% if permiso.ct_nombre == 'puede_editar_roles' %}
-                                            <a class="btn btn-success btn_show_editar"
-                                               data-url="{% url 'editar_rol' res.pk_codigo %}"
+                                        {% if permiso.ct_nombre == 'puede_eliminar_categoria_euipo' %}
+                                            <a class="btn btn-danger"
                                                href="#"
-                                               title="Editar"
+                                               data-toggle="modal"
+                                               data-target="#modal_eliminar"
+                                               style="color: white;"
+                                               onclick="eliminar('{{ res.pk_codigo }}','{{ res.ct_nombre }}')"
+                                               title="Eliminar sucursal">
+                                                <i class="icon icon-trash"></i>
+                                            </a>
+                                        {% elif permiso.ct_nombre == 'puede_actualizar_categoria_equipo' %}
+                                            <a class="btn btn-success btn_show_editar"
+                                               data-url="{% url 'editar_categoria' res.pk_codigo %}"
+                                               href="#"
+                                               title="Edi   tar"
                                                data-toggle="modal"
                                                data-target="#modal_editar">
                                                 <i class=" icon icon-pencil"></i>
                                             </a>
-                                        {% elif permiso.ct_nombre == 'puede_leer_permisos_rol' %}
-                                            <a class="btn btn-primary" href="{% url 'permisos_roles' res.pk_codigo %}" title="Permisos Asociados">
-                                                <i class=" icon icon-check"></i>
-                                            </a>
-                                        {% elif permiso.ct_nombre == 'puede_leer_menus_rol' %}
-                                            <a class="btn btn-indigo" href="{% url 'roles_menus' res.pk_codigo %}" title="Menus Asociados">
-                                                <i class=" icon icon-list"></i>
-                                            </a>
+
                                         {% endif %}
                                     {% endfor %}
                                 </td>
@@ -79,7 +83,7 @@
                     </table>
                     {% else %}
                         <div class="row justify-content-center">
-                            <h4><strong> No hay registros a <mostrar class=""></mostrar></strong></h4>
+                            <h4><strong> No hay registros a mostrar</strong></h4>
                         </div>
                     {% endif %}
                 </div>
@@ -87,7 +91,7 @@
 
         </div>
     </div>
-
+{#    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    Crear Categorias <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  #}
     <div class="modal fade"
          id="modal_crear"
          tabindex="-1"
@@ -95,10 +99,10 @@
          aria-labelledby="modal_crear"
          style="display: none;"
          aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Rol  : :  Crear</h5>
+                    <h5 class="modal-title">Categoria de equipo  : :  Crear</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -113,7 +117,7 @@
             </div>
         </div>
     </div>
-
+{#    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    Editar sucursal <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  #}
 
     <div class="modal fade"
          id="modal_editar"
@@ -122,7 +126,7 @@
          aria-labelledby="modal_editar"
          style="display: none;"
          aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Rol  : :  Actualizar</h5>
@@ -140,7 +144,41 @@
             </div>
         </div>
     </div>
+{#    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    Eliminar sucursal <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  #}
+    <div class="modal fade"
+         id="modal_eliminar"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="modal_eliminar"
+         style="display: none;"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> <strong style="color: darkred">Atencion !</strong></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="target_eliminar">
+                    <h5><strong>¿ Estas seguro de eliminar la categoria ?</strong></h5>
+                    <strong> Si la categoria esta ligada a equipos electricos, esta no podra ser eliminada <br>
+                    Categoria de equipo :<span id="sp_nombre"style="color: darkred"></span>
+                    </strong>
+
+                    <form action="#" id="eliminar" method="post">
+                          {% csrf_token %}
+                        <input type="text" value="" hidden>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                    <button id="btn_eliminar" form="eliminar" onclick="this.form.submit()"  class="btn btn-primary"  type="button">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-    <script type="text/javascript" src="{% static 'js/roles/roles.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/catalog/equipo/categoria.js' %}"></script>
 {% endblock %}

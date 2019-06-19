@@ -11,3 +11,8 @@ button.btn{
 button.btn>i.icon{
     font-weight: bold;
 }
+
+input:read-only{
+    background-color: white !important;
+;
+}

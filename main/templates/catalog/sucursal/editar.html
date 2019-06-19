@@ -1,6 +1,6 @@
 {% load bootstrap4 %}
-<form           action="{% url 'editar_rol' 'AABBCCDD' %}"
-                data-url="{% url 'validar_rol' %}"
+<form           action="{% url 'editar_sucursal' 'AABBCCDD' %}"
+                data-url="{% url 'validar_sucursal' %}"
                 name="editar"
                 method="POST"
                 id="editar"
@@ -9,7 +9,7 @@
         <div class="form-row">
             <div class="col col-4">
                  <label>Codigo :</label>
-                {% bootstrap_field form.codigo   show_label=False readonly=True %}
+                {% bootstrap_field form.codigo   show_label=False %}
             </div>
             <div class="col col-8">
                 <label>Nombre :</label>
@@ -18,8 +18,20 @@
         </div>
         <div class="form-row">
             <div class="col-12">
+                <label for="dir">Telefono :</label>
+                {% bootstrap_field form.telefono   show_label=False %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-12">
+                <label for="dir">Correo :</label>
+                {% bootstrap_field form.correo   show_label=False %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-12">
             <label>Descripcion :</label>
-            {% bootstrap_field form.desc   show_label=False %}
+            {% bootstrap_field form.dir   show_label=False %}
             </div>
 
             <div class="col-12">
@@ -28,5 +40,6 @@
             </div>
 
         </div>
+        {% bootstrap_field form.edit   show_label=False %}
 
 </form>

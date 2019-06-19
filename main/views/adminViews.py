@@ -5,28 +5,38 @@ from django.template.loader             import render_to_string
 from django.contrib.auth.decorators     import login_required
 from django.contrib                     import messages
 from django.views.generic.list          import ListView
-from django.core.paginator              import Paginator
+from django.http                        import Http404
 
-from django.db      import connection
-from main.forms import CrtRolForm, EditarMenuForm
-from  main.forms    import CrearMenuForm,RolForm,UserForm
-from main.models    import *
+from django.db import connection
+from main.formss import *
+from main.forms import UserForm
+from  main.formss import CrearMenuForm,RolForm
+from main.models import *
 
 #-----------------------------------------------------------------------------------------------------| Roles
 @login_required
 def get_roles(request):
-    roles_list = Rol.objects.all()
-    paginator = Paginator(roles_list, 8)
+    user=getUser(request.user)
+    permisos=func_get_permisos(user.fk_rol_codigo)
 
-    page = request.GET.get('page')
-    roles = paginator.get_page(page)
+    # Verificamos si tiene permisos para ver la pagina
+    count=0
+    for res in permisos:
+        if (res.ct_nombre == "puede_leer_roles"):
+            count =100
+    if count == 0:
+        raise Http404("El recurso no se encuentra disponible")
+    # Se finaliza la validacion de los permisos requeridos
 
+    # Logica de la funcion
+    roles = Rol.objects.all()
     context={
-        'roles':roles,
+        'roles': roles,
+        'Permisos':permisos,
         'User': getUser(request.user),
         'Menus': getMenus(getUser(request.user).fk_rol_codigo)
     }
-    return render(request,'admin/roles/roles.html',context)
+    return render(request, 'admin/roles/roles.html',context)
 
 @login_required
 def create_rol(request):
@@ -48,7 +58,7 @@ def create_rol(request):
             #     messages.add_message(request,messages.ERROR,'Ha ocurrido un error al insertar el nuevo rol')
             return redirect('roles')
     elif request.method =='GET':
-        form=RolForm(initial={'estado': False})
+        form = EditRolForm()
         context={
             'form':form
             }
@@ -57,7 +67,7 @@ def create_rol(request):
 
 def validar_rol(request):
     if request.method == 'POST':
-        form=RolForm(request.POST)
+        form = RolForm(request.POST)
         if form.is_valid():
             res=True
         else:
@@ -65,21 +75,40 @@ def validar_rol(request):
         context = {
             'form': form
         }
-        html = render_to_string('admin/roles/crear.html', context, request=request)
+        html = render_to_string('admin/roles/crear.html', context,request=request)
+        return JsonResponse({'html_form': html, 'res': res})
+    elif request.method =='GET':
+        form = EditRolForm(request.GET)
+        if form.is_valid():
+            res = True
+        else:
+            res = False
+        context = {
+            'form': form
+        }
+        html = render_to_string('admin/roles/editar.html', context, request=request)
         return JsonResponse({'html_form': html, 'res': res})
     else:
-        return redirect('roles')
-
-@login_required
-def delete_rol(request,id):
-    pass
+        return redirect('home')
 
 def editar_rol(request,codigo):
     if request.method == 'POST':
-        pass
+        form=EditRolForm(request.POST)
+        try:
+            if form.is_valid():
+                codigo=form.cleaned_data['codigo']
+                rol=Rol.objects.get(pk_codigo=codigo)
+                rol.ct_nombre=form.cleaned_data['nombre']
+                rol.cd_descripcion=form.cleaned_data['desc']
+                rol.cl_estado=form.cleaned_data['estado']
+                rol.save()
+                messages.add_message(request, messages.SUCCESS, 'Rol almacenado correctamente')
+        except:
+            messages.add_message(request, messages.ERROR, 'Un error a inpedido la accion')
+        return redirect('roles')
     elif request.method =='GET':
         rol = Rol.objects.get(pk_codigo=codigo)
-        form=RolForm(initial={
+        form= EditRolForm(initial={
             'codigo':rol.pk_codigo,
             'nombre':rol.ct_nombre,
             'desc':rol.cd_descripcion,
@@ -112,7 +141,7 @@ def permisos_roles(request,codigo):
     }
     return render(request, 'admin/roles/permisos.html', context)
 
-def get_permisos(request,codigo):
+def get_permisos(request, codigo):
     cursor = connection.cursor()
     cursor.callproc('bsp_get_permisos_roles', [False, codigo])
 
@@ -367,7 +396,7 @@ def get_usuarios(request):
 def crear_usuario(request):
     '''Metodo ajax que retorna el formulario de registro de los usuarios o ejecuta la accion de guardar '''
     if request.method == 'GET':
-        form = UserForm(initial={'cl_estado':False})
+        form = UserForm()
         context = {
             'form': form
         }
@@ -420,4 +449,18 @@ def getMenus(rol):
 def getUser(codigo):
     user = User.objects.get(username=codigo)
     return user
+
+def func_get_permisos(rol):
+    cursor = connection.cursor()
+    cursor.callproc('bsp_get_permisos_roles', [True, rol.pk_codigo])
+    permisos = list()
+    for row in cursor.fetchall():
+        per = Permiso()
+        per.pk_codigo = row[0]
+        per.ct_nombre = row[1]
+        per.cd_descripcion = row[2]
+
+        permisos.append(per)
+
+    return permisos
 

@@ -1,0 +1,33 @@
+{% load bootstrap4 %}
+<form           action="{% url 'crear_categoria' %}"
+                data-url="{% url 'validar_categoria' %}"
+                name="crear"
+                method="POST"
+                id="crear"
+                class="form">
+    {% csrf_token %}
+        <div class="form-row">
+            <div class="col-4">
+                <label>Codigo :</label>
+                {% bootstrap_field form.codigo   show_label=False %}
+            </div>
+            <div class="col-8">
+                <label>Nombre :</label>
+                {% bootstrap_field form.nombre   show_label=False %}
+            </div>
+            <div class="col-4"></div>
+        </div>
+        <div class="form-row">
+            <div class="col-12">
+                 <label>Descripcion :</label>
+                {% bootstrap_field form.desc   show_label=False %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-12">
+                 <label>Estado :</label>
+                {% bootstrap_field form.estado   show_label=False %}
+            </div>
+        </div>
+
+</form>

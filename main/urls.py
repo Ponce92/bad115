@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.urls import include
 from django.urls import path
+from main.views import catalogViews    as cat
 from main.views import adminViews       as admin
 from main.views import defaultViews     as home
 
@@ -24,18 +25,37 @@ urlpatterns = [
     path('home/',home.home,name='home'),
     path('',home.home,name='home'),
 
+#------------------------------------------------------------------------------------------------| Equipo electrico
+    path('catalogos/equipos/',cat.equipos,name='equipos'),
+    path('catalogos/equipos/crear/', cat.equipo_crear, name='crear_equipo'),
+    path('catalogos/equipos/validar/', cat.equipo_validar, name='equipo_validar'),
+    path('catalogos/equipos/editar/<str:codigo>/', cat.equipo_editar, name='equipo_editar'),
+    path('catalogos/equipos/eliminar/<str:codigo>/', cat.equipo_eliminar, name='equipo_eliminar'),
+#-----------------------------------------------------------------------------------------------------
+    path('catalogos/categorias/', cat.categoria ,name='categoria'),
+    path('catalogos/categorias/crear/', cat.categoria_crear, name='crear_categoria'),
+    path('catalogos/categorias/validar/', cat.categoria_validar, name='validar_categoria'),
+    path('catalogos/categorias/editar/<str:codigo>/', cat.categoria_editar, name='editar_categoria'),
+    path('catalogos/categorias/eliminar/<str:codigo>/', cat.categoria_eliminar, name='eliminar_categoia'),
+
+# -------------------------------------------------------------------------------------| Sucursales
+    path('catalogos/sucursales/',cat.sucursales,name='sucursales'),
+    path('catalogos/sucursales/crear/', cat.crear_sucursal, name='crear_sucursal'),
+    path('catalogos/sucursales/validar/', cat.validar_sucursal, name='validar_sucursal'),
+    path('catalogos/sucursales/editar/<str:codigo>/', cat.editar_sucursal, name='editar_sucursal'),
 
 
-    # Url hacia administracion de roles del sistema . . . . ...............................| Roles
+
+# Url hacia administracion de roles del sistema . . . . ...............................| Roles
     path('admin/roles/',admin.get_roles, name='roles'),
-    path('admin/roles/crear',admin.create_rol, name='crear_rol'),
-    path('admin/roles/validar',admin.validar_rol,name='validar_rol'),
+    path('admin/roles/crear/',admin.create_rol, name='crear_rol'),
+    path('admin/roles/validar/',admin.validar_rol,name='validar_rol'),
     path('admin/roles/actualizar/<str:codigo>/',admin.editar_rol, name='editar_rol'),
 
-    path('admin/roles/<str:codigo>/permisos/',admin.permisos_roles ,name='permisos_roles'),
-    path('admin/roles/permisos/agregar/',admin.agregar_permiso ,name='agregar_permiso'),
-    path('admin/roles/permisos/eliminar/',admin.eliminar_permiso ,name='eliminar_permiso'),
-    path('admin/roles/get/permisos/<str:codigo>/',admin.get_permisos,name='get_permisos'),
+    path('admin/roles/<str:codigo>/permisos/',admin.permisos_roles , name='permisos_roles'),
+    path('admin/roles/permisos/agregar/',admin.agregar_permiso , name='agregar_permiso'),
+    path('admin/roles/permisos/eliminar/',admin.eliminar_permiso , name='eliminar_permiso'),
+    path('admin/roles/get/permisos/<str:codigo>/', admin.get_permisos, name='get_permisos'),
 
     path('admin/roles/<str:codigo>/menus/',admin.roles_menus, name='roles_menus'),
     path('admin/roles/<str:codigo>/get/menus/', admin.get_menus, name='get_menus'),

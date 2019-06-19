@@ -4,3 +4,6 @@ from .Menu import Menu
 from .Permisos import Permiso
 from .PermisoRol import PermisoRol
 from .RolMenu import RolMenu
+from .Sucursal import Sucursal
+from .CategoriaEquipo import CategoriaEquipo
+from .Equipo import Equipo

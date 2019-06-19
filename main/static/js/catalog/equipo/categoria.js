@@ -21,6 +21,7 @@ $('#btn_crear').on('click',function () {
                 $('#crear').submit();
             }else{
                 $('#target_crear').html(data.html_form);
+                console.log(data.res);
             }
         }
     });
@@ -46,7 +47,6 @@ $('#btn_editar').on('click',function () {
         type:'GET',
         dataType:'json',
         success:function (data) {
-
             if(data.res){
 
                 $('#editar').submit();
@@ -57,3 +57,11 @@ $('#btn_editar').on('click',function () {
     });
     return false;
 });
+
+
+function eliminar(codigo,nombre) {
+    $('#sp_nombre').html(nombre )
+
+}
+
+//======================

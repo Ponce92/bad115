@@ -74,6 +74,51 @@
                                 ON DELETE CASCADE
                                 ON UPDATE CASCADE
     );
+# ---------------------------------------------------------------------------------------------------------------
+# Creamos la tabla Sucursales
+    DROP TABLE IF EXISTS bt_sucursales;
+    CREATE TABLE bt_sucursales(
+        pk_codigo           VARCHAR(8)    NOT NULL UNIQUE ,
+        ct_nombre           VARCHAR(255)    NOT NULL UNIQUE ,
+        ct_telefono         VARCHAR(9)             UNIQUE ,
+        cd_direccion        VARCHAR(255)  NOT NULL,
+        ct_correo           VARCHAR(255)  NOT NULL UNIQUE ,
+        cl_estado           BOOLEAN       NOT NULL,
+
+        PRIMARY KEY(pk_codigo)
+    );
+# ---------------------------------------------------------------------------------------------------------------
+# Creamos la tabla Euipo electrico
+DROP TABLE IF EXISTS bt_equipo_electrico;
+
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Creamos la tabla Euipo electrico
+DROP  TABLE IF EXISTS bt_categorias_equipos;
+    CREATE TABLE bt_categorias_equipos(
+        pk_codigo           VARCHAR(8)    NOT NULL UNIQUE   ,
+        ct_nombre           VARCHAR(150)    NOT NULL UNIQUE ,
+        cd_descripcion      VARCHAR(255)    NOT NULL        ,
+        cl_estado           BOOLEAN         NOT NULL        ,
+
+        PRIMARY KEY(pk_codigo)
+    );
+# ---------------------------------------------------------------------------------------------------------------
+# Creamos la tabla Euipo electrico
+DROP  TABLE IF EXISTS bt_equipos;
+    CREATE TABLE bt_equipos(
+        pk_codigo           VARCHAR(8)    NOT NULL UNIQUE   ,
+        fk_categoria_codigo VARCHAR(8)      NOT NULL        ,
+        ct_nombre           VARCHAR(150)    NOT NULL UNIQUE ,
+        cd_descripcion      VARCHAR(255)    NOT NULL        ,
+        cl_estado           BOOLEAN         NOT NULL        ,
+
+        PRIMARY KEY(pk_codigo),
+        FOREIGN KEY (fk_categoria_codigo) REFERENCES bt_categorias_equipos(pk_codigo)
+                                ON DELETE CASCADE
+                                ON UPDATE CASCADE
+    );
 
 
 

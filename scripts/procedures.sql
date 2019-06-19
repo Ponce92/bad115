@@ -144,3 +144,77 @@ CREATE  PROCEDURE bsp_get_menus_roles(
     END
     $$
 DELIMITER ;
+# Desc: procedimiento genera un codigo de sucursal e inserta los valores a la base dedatos
+CREATE SEQUENCE bsq_sucursal_codigo START WITH 1 INCREMENT BY 1;
+
+
+DROP PROCEDURE  IF EXISTS bsp_insert_sucursal;
+DELIMITER $$
+CREATE  PROCEDURE bsp_insert_sucursal(
+                    IN  p_nombre    VARCHAR(255),
+                    IN  p_telefono  VARCHAR(9),
+                    IN  p_dir       VARCHAR(255),
+                    IN  p_correo    VARCHAR(255),
+                    IN  p_estado    BOOLEAN
+                    )
+
+    BEGIN
+        DECLARE codigo   VARCHAR(8);
+        DECLARE curr    INT;
+        SET curr = (SELECT NEXT VALUE  FOR bsq_sucursal_codigo);
+        SET codigo=CONCAT('SUC',LPAD(curr,3,0));
+
+        INSERT INTO bt_sucursales (pk_codigo,
+                                   ct_nombre,
+                                   ct_telefono,
+                                   cd_direccion,
+                                   ct_correo,
+                                   cl_estado) VALUES (codigo,
+                                                      p_nombre,
+                                                      p_telefono,
+                                                      p_dir,
+                                                      p_correo,
+                                                      p_estado);
+        SELECT "ok" as res;
+
+    END
+    $$
+DELIMITER ;
+
+# --------------------------------------------------------------------------------------------------------
+
+DROP PROCEDURE  IF EXISTS bsp_insert_equipo;
+DELIMITER $$
+CREATE  PROCEDURE bsp_insert_equipo(
+                    IN  p_nombre    VARCHAR(255),
+                    IN  p_categoria VARCHAR(8),
+                    IN  p_desc      VARCHAR(255),
+                    IN  p_estado    BOOLEAN
+                    )
+
+    BEGIN
+        DECLARE codigo   VARCHAR(8);
+        DECLARE str     VARCHAR(4);
+        declare stf     VARCHAR(4);
+        SET curr = SELECT SUBSTRING(REPLACE(p_nombre,' ',''),4);
+
+        SET str = SELECT SUBSTRING(p_categoria,-4);
+
+
+        INSERT INTO bt_sucursales (pk_codigo,
+                                   ct_nombre,
+                                   ct_telefono,
+                                   cd_direccion,
+                                   ct_correo,
+                                   cl_estado) VALUES (codigo,
+                                                      p_nombre,
+                                                      p_telefono,
+                                                      p_dir,
+                                                      p_correo,
+                                                      p_estado);
+        SELECT "ok" as res;
+
+    END
+    $$
+DELIMITER ;
+

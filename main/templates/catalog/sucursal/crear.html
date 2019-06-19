@@ -1,0 +1,46 @@
+{% load bootstrap4 %}
+<form           action="{% url 'crear_sucursal' %}"
+                data-url="{% url 'validar_sucursal' %}"
+                name="crear"
+                method="POST"
+                id="crear"
+                class="form">
+    {% csrf_token %}
+        <div class="form-row">
+{#            <div class="col-4">#}
+{#                <label>Codigo :</label>#}
+{#                {% bootstrap_field form.codigo   show_label=False %}#}
+{#            </div>#}
+            <div class="col-8">
+                <label>Nombre :</label>
+                {% bootstrap_field form.nombre   show_label=False %}
+            </div>
+            <div class="col-4"></div>
+        </div>
+        <div class="form-row">
+            <div class="col-4">
+                 <label>Telefono :</label>
+                {% bootstrap_field form.telefono   show_label=False %}
+            </div>
+            <div class="col-3"></div>
+            <div class="col-5">
+                <label>Estado</label>
+                {% bootstrap_field form.estado   show_label=False %}
+            </div>
+        </div>
+      <div class="form-row">
+            <div class="col-12">
+                 <label>Correo electronico :</label>
+                {% bootstrap_field form.correo   show_label=False %}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-12">
+                 <label>Direccion :</label>
+                {% bootstrap_field form.dir   show_label=False %}
+            </div>
+        </div>
+
+
+</form>
