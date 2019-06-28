@@ -12,3 +12,4 @@ class Equipo(models.Model):
         managed = False
         db_table = 'bt_equipos'
         app_label = 'main'
+

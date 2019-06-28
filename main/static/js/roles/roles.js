@@ -38,7 +38,8 @@ $('.btn_show_editar').on('click',function () {
     });
 });
 
-$('#btn_editar').on('click',function () {
+$('#btn_editar').on('clic' +
+    'k',function () {
     var form=$('#editar');
     $.ajax({
         url:form.attr('data-url'),

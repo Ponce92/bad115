@@ -1,7 +1,7 @@
 {% extends 'layout/layout.html' %}
 {% load bootstrap4 %}
 {% load static %}
-{% block title %} Equipo electrico {% endblock %}
+{% block title %} Marcas {% endblock %}
 
 {% block content %}
     <div class="row" style="margin-top: 20px;">
@@ -9,16 +9,16 @@
             <div class="card">
                 <div class="card-header">
                     <i class="icon-list"></i>
-                    <strong>Usuarios del sistema</strong>
+                    <strong>Marcas registradas</strong>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col col-12">
                             {% for permiso  in Permisos  %}
-                                {% if permiso.ct_nombre == 'puede_agregar_equipo' %}
+                                {% if permiso.ct_nombre == 'puede_crear_marcas' %}
                                     <button class="btn btn-primary mb-3"
                                         id="btn_show_crear"
-                                        data-url="{% url 'crear_user' %}"
+                                        data-url="{% url 'crear_marca' %}"
                                         type="button"
                                         data-toggle="modal"
                                         data-target="#modal_crear">
@@ -31,11 +31,9 @@
                     {% if list %}
                     <table class="table table-responsive-sm table-bordered table-striped table-sm">
                         <thead>
-                            <th>Usuario</th>
-
-                            <th>Rol asignado</th>
-                            <th>Email</th>
-                            <th>Sucursal</th>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Descripcion</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </thead>
@@ -43,11 +41,9 @@
 
                                  {% for res in list %}
                             <tr>
-                                <td style="text-align: center">{{ res.username }}</td>
-                                <td>{{ res.fk_rol_codigo}}</td>
-                                <td>{{ res.email}}</td>
-                                <td>{{ res.fk_sucursal_codigo }}</td>
-
+                                <td style="text-align: center">{{ res.pk_codigo }}</td>
+                                <td>{{ res.ct_nombre}}</td>
+                                <td>{{ res.cd_desc}}</td>
                                 <td style="text-align: center">
                                     {% if res.cl_estado %}
                                         Activo
@@ -57,24 +53,29 @@
                                 </td>
                                 <td align="center">
                                     {% for permiso  in Permisos  %}
-                                        {% if permiso.ct_nombre == 'puede_eliminar_equipo' %}
+                                        {% if permiso.ct_nombre == 'puede_eliminar_marcas' %}
                                             <a class="btn btn-danger"
                                                href="#"
                                                data-toggle="modal"
                                                data-target="#modal_eliminar"
                                                style="color: white;"
                                                onclick="eliminar('{{ res.pk_codigo }}','{{ res.ct_nombre }}')"
-                                               title="Eliminar equipo">
+                                               title="Eliminar sucursal">
                                                 <i class="icon icon-trash"></i>
                                             </a>
-                                        {% elif permiso.ct_nombre == 'puede_actualizar_equipo' %}
+                                        {% elif permiso.ct_nombre == 'puede_actualizar_marcas' %}
                                             <a class="btn btn-success btn_show_editar"
-                                               data-url="{% url 'editar_equipo' res.username %}"
+                                               data-url="{% url 'editar_marca' res.pk_codigo %}"
                                                href="#"
                                                title="Editar"
                                                data-toggle="modal"
                                                data-target="#modal_editar">
                                                 <i class=" icon icon-pencil"></i>
+                                            </a>
+
+                                        {% elif permiso.ct_nombre == 'puede_administrar_sucursales' %}
+                                            <a class="btn btn-primary" href="{% url 'permisos_roles' res.pk_codigo %}" title="Permisos Asociados">
+                                                <i class=" icon icon-check"></i>
                                             </a>
                                         {% endif %}
                                     {% endfor %}
@@ -104,7 +105,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Usuarios  : :  Crear</h5>
+                    <h5 class="modal-title">Marca  : :  Crear</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -119,7 +120,7 @@
             </div>
         </div>
     </div>
-{#    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    Editar <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  #}
+{#    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    Editar sucursal <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  #}
 
     <div class="modal fade"
          id="modal_editar"
@@ -131,7 +132,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Equipo electrico  : :  Actualizar</h5>
+                    <h5 class="modal-title">Marca : :  Actualizar</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -183,5 +184,5 @@
     </div>
 
 
-    <script type="text/javascript" src="{% static 'js/admin/usuarios.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/catalog/marca/marca.js' %}"></script>
 {% endblock %}

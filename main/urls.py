@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.urls import include
 from django.urls import path
+from main.views import proveedorViews as pro
 from main.views import catalogViews    as cat
 from main.views import adminViews       as admin
 from main.views import defaultViews     as home
@@ -26,11 +27,29 @@ urlpatterns = [
     path('',home.home,name='home'),
 
 #------------------------------------------------------------------------------------------------| Equipo electrico
-    path('catalogos/equipos/',cat.equipos,name='equipos'),
+    path('proveedor/processo/', pro.servicios, name='proveedor_processo'),
+    path('proveedor/processo/agregar', pro.equipos_agregar, name='agregar_processo_proveedor'),
+    path('proveedor/processo/eliminar', pro.equipos_eliminar, name='eliminar_processo_proveedor'),
+
+#------------------------------------------------------------------------------------------------| Equipo electrico
+    path('proveedor/equipo/', pro.equipos, name='proveedor_equipo'),
+    path('proveedor/equipo/agregar', pro.equipos_agregar, name='agregar_equipo_proveedor'),
+    path('proveedor/equipo/eliminar', pro.equipos_eliminar, name='eliminar_equipo_proveedor'),
+
+
+#------------------------------------------------------------------------------------------------| Equipo electrico
+    path('catalogos/marcas/', cat.marcas, name='marcas'),
+    path('catalogos/marcas/crear/', cat.marca_crear, name='crear_marca'),
+    path('catalogos/marcas/validar/', cat.marca_validar, name='validar_marca'),
+    path('catalogos/marcas/editar/<str:codigo>/', cat.marca_editar, name='editar_marca'),
+    path('catalogos/marcas/eliminar/<str:codigo>/', cat.marca_eliminar, name='eliminar_marca'),
+
+#------------------------------------------------------------------------------------------------| Equipo electrico
+    path('catalogos/equipos/', cat.equipos, name='equipos'),
     path('catalogos/equipos/crear/', cat.equipo_crear, name='crear_equipo'),
-    path('catalogos/equipos/validar/', cat.equipo_validar, name='equipo_validar'),
-    path('catalogos/equipos/editar/<str:codigo>/', cat.equipo_editar, name='equipo_editar'),
-    path('catalogos/equipos/eliminar/<str:codigo>/', cat.equipo_eliminar, name='equipo_eliminar'),
+    path('catalogos/equipos/validar/', cat.equipo_validar, name='validar_equipo'),
+    path('catalogos/equipos/editar/<str:codigo>/', cat.equipo_editar, name='editar_equipo'),
+    path('catalogos/equipos/eliminar/<str:codigo>/', cat.equipo_eliminar, name='eliminar_equipo'),
 #-----------------------------------------------------------------------------------------------------
     path('catalogos/categorias/', cat.categoria ,name='categoria'),
     path('catalogos/categorias/crear/', cat.categoria_crear, name='crear_categoria'),
@@ -80,7 +99,5 @@ urlpatterns = [
     #UR  --------------------------------------------------------------------------------------------|    Usuarios
     path('admin/usuarios/',admin.get_usuarios,name='usuarios'),
     path('admin/usuarios/crear/',admin.crear_usuario,name='crear_user'),
-    path('admin/usuarios/crear/validar/', admin.validar_usuario, name='validar_user')
-
-
+    path('admin/usuarios/validar/', admin.validar_usuario, name='validar_user')
 ]

@@ -1,0 +1,212 @@
+    {% extends 'layout/layout.html' %}
+    {% load bootstrap4 %}
+    {% load static %}
+    {% block title %} Equipo electrico {% endblock %}
+
+    {% block content %}
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon-list"></i>
+                        <strong>Catalogo de equipos ofertados</strong>
+                    </div>
+                    <div class="card-body">
+                     <form action="{% url 'agregar_equipo_proveedor' %}"
+                           id="frm-add"
+                           name="frm-add"
+                           style="width: 100%"  method="Post">
+                         {% csrf_token %}
+                         <input type="text" id="equipo" name="equipo" value="" hidden required/>
+                         <input type="text" id="proveedor" name="proveedor" value="{{ proveedor.pk_codigo }}" hidden required>
+                    </form>
+                    {% for permiso  in Permisos  %}
+                        {% if permiso.ct_nombre == 'puede_agregar_proveedor_equipo' %}
+                            <div class="col col-12">
+                                <div class="row justify-content-end">
+                                    <button type="button"
+                                            data-toggle="modal"
+                                           data-target="#modal_editar"
+                                            class="btn btn-success">
+                                                    <i class="icon icon-menu"></i>
+                                    </button>
+                                    <input  type="text"
+                                            id="nombreE"
+                                            onkeypress="return false"
+                                            required="required"
+                                            form="frm-add"
+                                            autocomplete="off"
+                                            style="font-weight: bold;"
+                                            placeholder="Equipo"
+                                            class="form-control input-frm">
+
+                                    <button  class="btn btn-primary"
+                                            form="frm-add">
+                                        <i class="icon icon-plus"> </i> Agregar
+                                    </button>
+                                </div>
+
+                            </div>
+
+                       {% endif %}
+                    {% endfor %}
+                        <br><br>
+                    {% if list %}
+                    <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                        <thead>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Catergoria</th>
+                            <th>Descripcion</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </thead>
+                        <tbody>
+
+                                 {% for res in list %}
+                            <tr>
+                                <td style="text-align: center">{{ res.pk_codigo }}</td>
+                                <td>{{ res.ct_nombre}}</td>
+                                <td>{{ res.fk_categoria_codigo }}</td>
+                                <td>{{ res.cd_descripcion}}</td>
+                                <td style="text-align: center">
+                                    {% if res.cl_estado %}
+                                        Activo
+                                    {% else %}
+                                        Inactivo
+                                    {% endif %}
+                                </td>
+                                <td align="center">
+                                    {% for permiso  in Permisos  %}
+                                        {% if permiso.ct_nombre == 'puede_eliminar_equipo_ofertado' %}
+                                            <a class="btn btn-danger"
+                                               href="#"
+                                               data-toggle="modal"
+                                               data-target="#modal_eliminar"
+                                               style="color: white;"
+                                               onclick="eliminar('{{ res.pk_codigo }}','{{ res.ct_nombre }}')"
+                                               title="Eliminar equipo">
+                                                <i class="icon icon-trash"></i>
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <div class="row justify-content-center">
+                            <h4><strong> No hay registros a mostrar</strong></h4>
+                        </div>
+                    {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    {#    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    Agregar equipo ofertado <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  #}
+
+        <div class="modal fade"
+             id="modal_editar"
+             tabindex="-1"
+             role="dialog"
+             aria-labelledby="modal_editar"
+             style="display: none;"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Catalogos de equipo </h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="target_editar">
+                        {% if list2 %}
+                        <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                            <thead>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Catergoria</th>
+                                <th>Descripcion</th>
+
+                                <th>Acciones</th>
+                            </thead>
+                            <tbody>
+
+                                     {% for res in list2 %}
+                                <tr>
+                                    <td style="text-align: center">{{ res.pk_codigo }}</td>
+                                    <td>{{ res.ct_nombre}}</td>
+                                    <td>{{ res.fk_categoria_codigo.ct_nombre }}</td>
+                                    <td>{{ res.cd_descripcion}}</td>
+                                    <td align="center">
+                                        <button type="button"
+                                                data-dismiss="modal"
+                                                onclick="agregar('{{ res.pk_codigo }}','{{ res.ct_nombre }}')"
+                                                class="btn btn-success">
+                                            <i class="icon icon-plus"></i>
+                                    </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                            <div class="row justify-content-center">
+                                <h4><strong> Sin equipos que puedas ofertar</strong></h4>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary"
+                                data-dismiss="modal"
+                                type="button" >Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {#    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    Eliminar equipo ofertado <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  #}
+        <div class="modal fade"
+             id="modal_eliminar"
+             tabindex="-1"
+             role="dialog"
+             aria-labelledby="modal_eliminar"
+             style="display: none;"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"> <strong style="color: darkred">Atencion !</strong></h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="target_eliminar">
+                        <h5><strong>Seguro quieres dejar de ofertar este equipo</strong></h5>
+                        <strong> Ya no aparaceras como un proveedor que proporcione este equipo<br>
+                        Equipo ofertado a eliminar :<span id="sp_nombre"style="color: darkred"></span>
+                        </strong>
+
+                        <form action="{% url 'eliminar_equipo_proveedor'  %}" id="eliminar" method="post">
+                              {% csrf_token %}
+                            <input type="text" id="codigo_el" name="codigo_el" value="" hidden>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                        <button id="btn_eliminar"
+                                form="eliminar"
+                                onclick="this.form.submit()"
+                                class="btn btn-primary"
+                                type="button">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script type="text/javascript" src="{% static 'js/proveedor/equipo.js' %}"></script>
+    {% endblock %}

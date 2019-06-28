@@ -1,3 +1,4 @@
+from django.contrib.auth import hashers
 from django.shortcuts                   import render
 from django.shortcuts                   import redirect
 from django.http                        import JsonResponse
@@ -7,10 +8,11 @@ from django.contrib                     import messages
 from django.views.generic.list          import ListView
 from django.http                        import Http404
 
+
 from django.db import connection
 from main.formss import *
 from main.forms import UserForm
-from  main.formss import CrearMenuForm,RolForm
+from main.formss import CrearMenuForm, RolForm
 from main.models import *
 
 #-----------------------------------------------------------------------------------------------------| Roles
@@ -58,7 +60,7 @@ def create_rol(request):
             #     messages.add_message(request,messages.ERROR,'Ha ocurrido un error al insertar el nuevo rol')
             return redirect('roles')
     elif request.method =='GET':
-        form = EditRolForm()
+        form = RolForm()
         context={
             'form':form
             }
@@ -384,32 +386,95 @@ def crear_permiso(request):
         html = render_to_string('admin/permisos/crear.html', context, request=request)
         return JsonResponse({'html_form': html})
 
+# @login_required(login_url='/sgiee/security/login/')
 def get_usuarios(request):
-    user=getUser(request.user)
+    user = getUser(request.user)
+    permisos = func_get_permisos(user.fk_rol_codigo)
+    count = 0
+    for res in permisos:
+        if (res.ct_nombre == "puede_leer_usuarios"):
+            count = 100
+    if count == 0:
+        raise Http404("El recurso no se encuentra disponible")
+    # ---------------------------------------------------------
 
-    context={
+    list = User.objects.all()
+    context = {
+        'list': list,
+        'Permisos': permisos,
         'User': user,
-        'Menus': getMenus(user.fk_rol_codigo)
+        'Menus': getMenus(getUser(request.user).fk_rol_codigo)
     }
-    return render(request,'admin/usuarios/usuarios.html',context)
+    return render(request, 'admin/usuarios/usuarios.html', context)
 
 def crear_usuario(request):
-    '''Metodo ajax que retorna el formulario de registro de los usuarios o ejecuta la accion de guardar '''
-    if request.method == 'GET':
-        form = UserForm()
+    '''
+    Metodo ajax que retorna el formulario de registro de los usuarios o ejecuta la accion de guardar
+    '''
+
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            # us = User()
+            # us.email =
+            # us.username = form.cleaned_data['username']
+            # us.fk_rol_codigo = form.cleaned_data['rol']
+            # us.fk_sucursal_codigo = form.cleaned_data['sucursal']
+            # us.cl_estado=form.cleaned_data['estado']
+
+            ps = form.cleaned_data['password1']
+            # us.password = hashers.make_password(ps)
+
+            User.objects.create(email=form.cleaned_data['email'],
+                                pk_codigo=form.cleaned_data['codigo'],
+                                username=form.cleaned_data['username'],
+                                fk_rol_codigo=form.cleaned_data['rol'],
+                                fk_sucursal_codigo= form.cleaned_data['sucursal'],
+                                cl_estado=form.cleaned_data['estado'],
+                                is_active=form.cleaned_data['estado'],
+                                password=hashers.make_password(ps)
+                                )
+
+            messages.add_message(request, messages.SUCCESS,'El usuario ha sido registrado con exito')
+            context = {
+                'form': form
+            }
+            return redirect('usuarios')
+
+    elif request.method == 'GET':
+        form = UserForm(initial={'estado':False})
         context = {
             'form': form
         }
         html = render_to_string('admin/usuarios/crear.html', context, request=request)
         return JsonResponse({'html_form': html})
-    elif request.method == 'POST':
-        pass
 
-
-def validar_usuario():
+def validar_usuario(request):
     '''Metodo ajax que valida el formulario de registro de un usuario retorna true o false '''
-    pass
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            res = True
+        else:
+            res = False
 
+        context = {
+            'form': form
+        }
+        html = render_to_string('admin/usuarios/crear.html', context, request=request)
+        return JsonResponse({'html_form': html, 'res': res})
+    elif request.method == 'GET':
+        form = UserForm(request.GET)
+        if form.is_valid():
+            res = True
+        else:
+            res = False
+
+        context = {
+            'form': form
+        }
+        html = render_to_string('catalog/equipos/editar.html', context, request=request)
+        return JsonResponse({'html_form': html, 'res': res})
 # ----------------------------------------------------------------------------------------
 #       List views
 # ----------------------------------------------------------------------------------------

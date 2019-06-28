@@ -120,7 +120,52 @@ DROP  TABLE IF EXISTS bt_equipos;
                                 ON UPDATE CASCADE
     );
 
+# ---------------------------------------------------------------------------------------------------------------
+# Creamos la tabla servicios
+
+DROP TABLE IF EXISTS bt_servicios;
+
+CREATE TABLE bt_servicios(
+    pk_codigo       VARCHAR(8)      NOT NULL UNIQUE ,
+    ct_nombre       VARCHAR(100)    NOT NULL UNIQUE ,
+    cd_desc         VARCHAR(8)      NOT NULL,
+    cl_estado       BOOLEAN         NOT NULL ,
+
+    PRIMARY KEY (pk_codigo)
+
+);
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Creamos la tabla serivicios- proeedor
+
+DROP TABLE IF EXISTS bt_proveedor_servicios;
+
+CREATE TABLE bt_proveedor_servicios(
+    pk_id                   INT             NOT NULL AUTO_INCREMENT,
+    fk_proveedor_codigo     VARCHAR(8)      NOT NULL,
+    fk_equipo_codigo        VARCHAR(8)      NOT NULL,
+    fk_servicio_codigo      VARCHAR(8)      NOT NULL,
+
+    PRIMARY KEY (pk_id),
+    FOREIGN KEY (fk_proveedor_codigo) REFERENCES bt_proveedores(pk_codigo),
+    FOREIGN KEY (fk_equipo_codigo)  REFERENCES bt_equipos(pk_codigo),
+    FOREIGN KEY (fk_servicio_codigo)  REFERENCES bt_servicios(pk_codigo)
+);
 
 
 
+# ---------------------------------------------------------------------------------------------------------------
+# Creamos la tabla proveedor-equipo
 
+DROP TABLE IF EXISTS bt_proveedor_equipos;
+
+CREATE TABLE bt_proveedor_equipos(
+    pk_id                   INT             NOT NULL AUTO_INCREMENT,
+    fk_proveedor_codigo     VARCHAR(8)      NOT NULL,
+    fk_equipo_codigo        VARCHAR(8)      NOT NULL,
+
+    PRIMARY KEY (pk_id),
+    FOREIGN KEY (fk_proveedor_codigo) REFERENCES bt_proveedores(pk_codigo),
+    FOREIGN KEY (fk_equipo_codigo)  REFERENCES bt_equipos(pk_codigo)
+);

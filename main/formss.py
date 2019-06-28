@@ -71,16 +71,6 @@ class EditRolForm(forms.Form):
         super(EditRolForm, self).__init__(*args, **kwargs)
         self.fields['codigo'].widget.attrs['readonly'] = True
 
-    # def clean_nombre(self):
-    #     print(self.cleaned_data['codigo'])
-    #     if self.has_changed:
-    #         nombre = self.cleaned_data['nombre']
-    #         try:
-    #             rol = Rol.objects.get(ct_nombre=nombre)
-    #         except Rol.DoesNotExist:
-    #             return nombre
-    #         raise forms.ValidationError('El nombre del rol ya se encuentra registrado')
-
 
 
 # ----------------------------------------------------------------------------------------------

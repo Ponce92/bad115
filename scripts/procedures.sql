@@ -194,25 +194,28 @@ CREATE  PROCEDURE bsp_insert_equipo(
 
     BEGIN
         DECLARE codigo   VARCHAR(8);
-        DECLARE str     VARCHAR(4);
-        declare stf     VARCHAR(4);
-        SET curr = SELECT SUBSTRING(REPLACE(p_nombre,' ',''),4);
+        DECLARE curr_pk  VARCHAR(8);
+        DECLARE curr_cod VARCHAR(2);
+        DECLARE count   INT;
 
-        SET str = SELECT SUBSTRING(p_categoria,-4);
+        SET @cod = CONCAT(SUBSTRING(p_categoria,-4),UPPER(SUBSTRING(p_nombre,1,2)));
 
+        #----------------------| verificamos si existe una linea de correlativos para este codigo
+        SET count= (SELECT COUNT(*) FROM bt_equipos WHERE pk_codigo LIKE CONCAT(@cod,'%'));
 
-        INSERT INTO bt_sucursales (pk_codigo,
-                                   ct_nombre,
-                                   ct_telefono,
-                                   cd_direccion,
-                                   ct_correo,
-                                   cl_estado) VALUES (codigo,
-                                                      p_nombre,
-                                                      p_telefono,
-                                                      p_dir,
-                                                      p_correo,
-                                                      p_estado);
-        SELECT "ok" as res;
+        SELECT count as 'cout',@cod as 'cod';
+#         IF count=0 THEN
+#             INSERT INTO bt_equipos (pk_codigo,fk_categoria_codigo, ct_nombre, cd_descripcion, cl_estado)
+#                     VALUES (CONCAT(cod,'01'), p_categoria, p_nombre, p_desc,p_estado);
+#         ELSE
+#             SET curr_pk=(SELECT MAX(pk_codigo) FROM bt_equipos WHERE pk_codigo LIKE CONCAT(@cod,'%') );
+#             SET curr_cod=CAST(SUBSTRING(curr_pk,-2) as INT);
+#             INSERT INTO bt_equipos (pk_codigo,fk_categoria_codigo, ct_nombre, cd_descripcion, cl_estado)
+#                     VALUES (CONCAT(@cod,LPAD(CONCAT(curr_cod+1,''),2,'0')), p_categoria, p_nombre, p_desc,p_estado);
+#
+#         END IF;
+
+#         SELECT "ok" as res;
 
     END
     $$

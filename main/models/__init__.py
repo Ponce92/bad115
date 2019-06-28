@@ -7,3 +7,8 @@ from .RolMenu import RolMenu
 from .Sucursal import Sucursal
 from .CategoriaEquipo import CategoriaEquipo
 from .Equipo import Equipo
+from .Marca import Marca
+from .Servicio import Servicio
+from .Proveedor import Proveedor
+from .ProveedorEquipo import ProveedorEquipos
+from .ProveedorServicio import ProveedorServicios

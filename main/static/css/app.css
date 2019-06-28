@@ -12,7 +12,14 @@ button.btn>i.icon{
     font-weight: bold;
 }
 
-input:read-only{
+#id_codigo{
+    background-color: white;
+    text-transform: uppercase;
+}
+
+.input-frm{
     background-color: white !important;
-;
+    margin-right: 30px;
+    margin-left: 10px;
+    max-width: 500px;
 }
